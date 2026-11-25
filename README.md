@@ -137,8 +137,10 @@ curl -X POST http://localhost:8080/api/appointments/1/cancel \
 
 ## 健壮性设计
 
-- **防重复预订**：`Appointment.slot` 唯一约束 + `TimeSlot` 乐观锁（`@Version`）compare-and-set，
-  并发第二次预订返回 `409 CONCURRENT_MODIFICATION`。
+- **防重复预订**：`TimeSlot` 乐观锁（`@Version`）compare-and-set + 时段状态校验，并发第二次预订返回 `409 CONCURRENT_MODIFICATION`。
+- **取消后可再预约**：`Appointment.slot` 为 `@ManyToOne`（同一时段可有多条历史预约），取消释放时段后可再次预约。
+- **启动自动迁移**：`SqliteSchemaMigration` 在启动早期检测旧库残留的 `slot_id UNIQUE` 约束并重建 `appointment` 表（保留数据），因此升级到本版本后**直接重启即可**，无需手动删库。
+- **末尾斜杠兼容**：`WebMvcConfig` 重新启用 `useTrailingSlashMatch`，`/api/appointments/` 与 `/api/appointments` 等价，避免 Postman 等客户端带末尾斜杠时 404。
 - **原子取消**：单事务内校验归属（`403`）与资格（`409`）→ 置 `CANCELED` → 释放时段回 `AVAILABLE`。
 - **统一异常处理**：`@RestControllerAdvice` 输出统一错误体，`400` / `403` / `404` / `409` / `500`。
 - **可用性过滤**：严格排除 `BOOKED` / `LOCKED` / 已过期时段。
