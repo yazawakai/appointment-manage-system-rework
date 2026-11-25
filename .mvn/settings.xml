@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <!-- Point the local repository inside the workspace so the build does not
+         attempt to write outside the sandboxed project directory. -->
+    <localRepository>C:/Users/zhang/IdeaProjects/appointment-manage-system-rework/.m2-repo</localRepository>
+</settings>

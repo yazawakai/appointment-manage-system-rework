@@ -1,0 +1,19 @@
+# Build output
+target/
+out/
+
+# Local Maven repository (sandbox workaround)
+.m2-repo/
+
+# SQLite database files
+*.db
+*.db-wal
+*.db-shm
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
